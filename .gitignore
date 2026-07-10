@@ -79,4 +79,4 @@ Testing/
 .DS_Store
 
 # Secrets
-secrets.h
+src/secrets.h
