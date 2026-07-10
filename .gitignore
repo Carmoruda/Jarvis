@@ -78,3 +78,5 @@ Testing/
 # MacOs files
 .DS_Store
 
+# Secrets
+secrets.h
