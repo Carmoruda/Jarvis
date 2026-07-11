@@ -10,12 +10,6 @@ struct Screen {
         uint8_t scl_pin;
 };
 
-struct Button {
-    public:
-        uint8_t pin;
-        bool state;
-};
-
 struct WiFiConfig {
     public:
         const char *ssid;
@@ -23,10 +17,13 @@ struct WiFiConfig {
         const char *ntpServer;
 };
 
+
 constexpr Screen SCREEN = {21, 22};
 constexpr WiFiConfig WIFI_CONFIG = {WIFI_SSID, WIFI_PASS, "pool.ntp.org"};
 
 const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (CET) with daylight saving time
+int prevHour = -1;
+int prevMin = -1;
 
 // LED Screen config (Rotation, Reset pin)
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
@@ -104,10 +101,18 @@ void loop() {
     if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
 
     struct tm time_info;
-
     getLocalTime(&time_info);
 
-    drawClock(String(time_info.tm_hour), String(time_info.tm_min));
+
+    char hour[3], min[3];   // 2 dígitos + '\0'
+    snprintf(hour, sizeof(hour), "%02d", time_info.tm_hour);
+    snprintf(min, sizeof(min), "%02d", time_info.tm_min);
+
+    if (time_info.tm_hour != prevHour || time_info.tm_min != prevMin) {
+        drawClock(String(hour), String(min));
+        prevHour = time_info.tm_hour;
+        prevMin = time_info.tm_min;
+    }
 
     u8g2.sendBuffer();
 }
