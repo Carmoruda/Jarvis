@@ -20,7 +20,7 @@ struct WiFiConfig {
     public:
         const char *ssid;
         const char *password;
-        char *ntpServer;
+        const char *ntpServer;
 };
 
 constexpr Screen SCREEN = {21, 22};
@@ -34,7 +34,7 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 void connectWiFi()
 {
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.setFont(u8g2_font_bitcasual_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth("Connecting to WiFi...")) / 2, 30, "Connecting to WiFi...");
     u8g2.sendBuffer();
 
@@ -50,7 +50,6 @@ void connectWiFi()
     if (WiFi.status() == WL_CONNECTED) {
 
         u8g2.clearBuffer();
-        u8g2.setFont(u8g2_font_ncenB08_tr);
         u8g2.drawStr((128 - u8g2.getStrWidth("WiFi connected!")) / 2, 30, "WiFi connected!");
         u8g2.sendBuffer();
 
@@ -58,7 +57,6 @@ void connectWiFi()
 
     } else {
         u8g2.clearBuffer();
-        u8g2.setFont(u8g2_font_ncenB08_tr);
         u8g2.drawStr((128 - u8g2.getStrWidth("WiFi FAILED!")) / 2, 30, "WiFi FAILED!");
         u8g2.sendBuffer();
 
@@ -69,13 +67,23 @@ void connectWiFi()
 void syncTime()
 {
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_ncenB08_tr);
+    u8g2.setFont(u8g2_font_bitcasual_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth("Syncing time...")) / 2, 30, "Syncing time...");
     u8g2.sendBuffer();
 
     configTzTime(time_zone, WIFI_CONFIG.ntpServer);
 
     delay(1000);
+}
+
+void drawClock(String hourStr, String minStr) {
+    u8g2.clearBuffer();
+    u8g2.setFont(u8g2_font_freedoomr25_tn);
+    String timeStr = hourStr + ":" + minStr;
+    u8g2.setCursor((128 - u8g2.getStrWidth(timeStr.c_str())) / 2, 50);
+    u8g2.print(hourStr);
+    u8g2.print(":");
+    u8g2.print(minStr);
 }
 
 void setup() {
@@ -93,30 +101,13 @@ void setup() {
 }
 
 void loop() {
-    time_t now = time(nullptr);
-    struct tm t;
-    getLocalTime(&t);
+    if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
 
-    u8g2.clearBuffer();
+    struct tm time_info;
 
-    u8g2.setFont(u8g2_font_6x10_tr);
+    getLocalTime(&time_info);
 
-    char timeString[sizeof("HH:MM:SS")];
-    // snprintf -> destination buffer, size of the buffer, format string, values to format
-    snprintf(timeString, sizeof(timeString),
-        "%02d:%02d:%02d",
-        t.tm_hour,
-        t.tm_min,
-        t.tm_sec
-    );
-    u8g2.drawStr(0, 10, timeString);
-
-    u8g2.setFont(u8g2_font_ncenB14_tr);
-    const char *txt = "Hola!";
-    u8g2.drawStr((128 - u8g2.getStrWidth(txt)) / 2, 35, txt);
-
-    u8g2.setFont(u8g2_font_6x10_tr);
-    u8g2.drawStr(0, 60, "jarvis v0.1");
+    drawClock(String(time_info.tm_hour), String(time_info.tm_min));
 
     u8g2.sendBuffer();
 }
