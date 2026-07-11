@@ -10,6 +10,12 @@ struct Screen {
         uint8_t scl_pin;
 };
 
+struct Button {
+    public:
+        uint8_t pin;
+        bool state;
+};
+
 struct WiFiConfig {
     public:
         const char *ssid;
@@ -18,6 +24,7 @@ struct WiFiConfig {
 
 constexpr Screen SCREEN = {21, 22};
 constexpr WiFiConfig WIFI_CONFIG = {WIFI_SSID, WIFI_PASS};
+Button BUTTON = {32, false};
 
 const char* ntpServer = "pool.ntp.org";
 const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (CET) with daylight saving time
@@ -54,7 +61,9 @@ void setup() {
 
     configTzTime(time_zone, ntpServer);
 
-    delay(1000);
+    pinMode(BUTTON.pin, INPUT_PULLUP);
+
+    delay(100);
 }
 
 void loop() {
@@ -84,5 +93,14 @@ void loop() {
     u8g2.drawStr(0, 60, "jarvis v0.1");
 
     u8g2.sendBuffer();
+
+    int lectura = digitalRead(BUTTON.pin);
+
+    if (lectura != BUTTON.state) {
+        BUTTON.state = lectura;
+
+        if (lectura == LOW) Serial.println("pulsado");
+        else                Serial.println("soltado");
+    }
 
 }
