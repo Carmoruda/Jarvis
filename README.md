@@ -38,7 +38,7 @@ The table below maps each component to its ESP32 GPIO. For the full wiring, the 
   </thead>
   <tbody>
     <tr>
-      <td rowspan="4"><a href="https://www.lcsc.com/product-detail/C5248080.html">OLED Display (SSD1306, I²C)</a></td>
+      <td rowspan="4"><a href="https://www.lcsc.com/product-detail/C5248080.html" target="_blank">OLED Display (SSD1306, I²C)</a></td>
       <td>VCC</td>
       <td>3V3</td>
       <td>Do not use 5V / VIN</td>
@@ -59,7 +59,7 @@ The table below maps each component to its ESP32 GPIO. For the full wiring, the 
       <td>I²C clock</td>
     </tr>
     <tr>
-      <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html">Next Screen Button</a></td>
+      <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html" target="_blank">Next Screen Button</a></td>
       <td>Pin 1</td>
       <td>GPIO32</td>
       <td>INPUT_PULLUP; pressed = LOW</td>
@@ -70,7 +70,7 @@ The table below maps each component to its ESP32 GPIO. For the full wiring, the 
       <td>Other leg to ground</td>
     </tr>
     <tr>
-      <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html">Previous Screen Button</a></td>
+      <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html" target="_blank">Previous Screen Button</a></td>
       <td>Pin 1</td>
       <td>GPIO27</td>
       <td>INPUT_PULLUP; pressed = LOW</td>
@@ -129,7 +129,7 @@ You can run Jarvis entirely in VS Code without any physical hardware using the [
       elf = ".pio/build/jarvis/firmware.elf"
     ```
 
-3. Add a `diagram.json` in the project root describing the circuit. You can copy it from the public Wokwi project here: [wokwi.com/projects/469374163665964033](https://wokwi.com/projects/469374163665964033)
+3. Add a `diagram.json` in the project root describing the circuit. You can copy it from the public Wokwi project here: [wokwi.com/projects/469374163665964033](https://wokwi.com/projects/469374163665964033).
 
 4. Set your credentials to Wokwi's guest network in `secrets.h`:
 
@@ -152,4 +152,3 @@ You can run Jarvis entirely in VS Code without any physical hardware using the [
         <img src="https://contrib.rocks/image?repo=carmoruda/Jarvis" width="50"/>
     </a>
 </p>
-````
