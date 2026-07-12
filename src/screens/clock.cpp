@@ -20,6 +20,13 @@ void drawClock(String hourStr, String minStr) {
     u8g2.print(hourStr);
     u8g2.print(":");
     u8g2.print(minStr);
+
+    u8g2.sendBuffer();
+}
+
+void resetPrevTime() {
+    prevHour = -1;
+    prevMin = -1;
 }
 
 void clockSetup()

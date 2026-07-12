@@ -4,3 +4,4 @@ extern const char *time_zone;
 
 void clockSetup();
 void drawClock();
+void resetPrevTime();

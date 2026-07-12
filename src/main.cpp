@@ -1,9 +1,12 @@
 #include <Arduino.h>
-#include <U8g2lib.h>
 #include <Wire.h>
 #include <WiFi.h>
 #include "secrets.h"
 #include "strings.h"
+#include "screens/clock.h"
+#include "screens/wifi_settings.h"
+#include "hardware/display.h"
+#include "hardware/buttons.h"
 
 struct Screen {
     public:
@@ -20,17 +23,19 @@ struct WiFiConfig {
         const char *ntpServer;
 };
 
+enum ScreenStates {
+    CLOCK,
+    EYES,
+    WIFI,
+    NUM_SCREENS
+};
 
 constexpr Screen SCREEN = {128, 64, 21, 22};
 constexpr WiFiConfig WIFI_CONFIG = {WIFI_SSID, WIFI_PASS, "pool.ntp.org"};
 
-// Time zone configuration
-const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (CET) with daylight saving time
-int prevHour = -1;
-int prevMin = -1;
-
-// LED Screen config (Rotation, Reset pin)
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+// Screen
+int screen = ScreenStates::CLOCK;
+int lastScreen = -1;
 
 void connectWiFi()
 {
@@ -83,21 +88,6 @@ void syncTime()
     delay(1000);
 }
 
-void drawClock(String hourStr, String minStr) {
-
-    // Clear the buffer and set the font
-    u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_freedoomr25_tn);
-
-    String timeStr = hourStr + ":" + minStr;
-
-    // Draw the time in the center of the screen
-    u8g2.setCursor((128 - u8g2.getStrWidth(timeStr.c_str())) / 2, 50);
-    u8g2.print(hourStr);
-    u8g2.print(":");
-    u8g2.print(minStr);
-}
-
 void setup() {
     Serial.begin(115200);
 
@@ -110,6 +100,8 @@ void setup() {
     connectWiFi();
     syncTime();
 
+    buttonsSetup();
+
     delay(100);
 }
 
@@ -117,19 +109,37 @@ void loop() {
     // Reconnect to WiFi if disconnected
     if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
 
-    // Get the current time
-    struct tm time_info;
-    getLocalTime(&time_info);
+    if (readButton(upButton) && screen < ScreenStates::NUM_SCREENS - 1) {
+        screen++;
+    }
+    if (readButton(downButton) && screen > 0) {
+        screen--;
+    }
 
-    char hour[3], min[3];   // 2 digits + null terminator
-    snprintf(hour, sizeof(hour), "%02d", time_info.tm_hour);
-    snprintf(min, sizeof(min), "%02d", time_info.tm_min);
+    if (screen != lastScreen) {
+        u8g2.clearBuffer();
+        u8g2.sendBuffer();
+        lastScreen = screen;
+        Serial.print("Screen changed to: ");
+        Serial.println(screen);
+        if (screen == ScreenStates::CLOCK) {
+            resetPrevTime();
+        }
+    }
 
-    // Only update the display if the time has changed
-    if (time_info.tm_hour != prevHour || time_info.tm_min != prevMin) {
-        drawClock(String(hour), String(min));
-        prevHour = time_info.tm_hour;
-        prevMin = time_info.tm_min;
+    switch (screen) {
+        case ScreenStates::CLOCK:
+            clockSetup();
+            break;
+        case ScreenStates::EYES:
+            u8g2.clearBuffer();
+            u8g2.setFont(u8g2_font_bitcasual_tr);
+            u8g2.drawStr(10, 30, "Eyes screen");
+            u8g2.sendBuffer();
+            break;
+        case ScreenStates::WIFI:
+            drawWiFiSettings();
+            break;
     }
 
     u8g2.sendBuffer();
