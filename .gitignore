@@ -78,6 +78,14 @@ Testing/
 # MacOs files
 .DS_Store
 
+# Secrets
+src/secrets.h
+
 # Wokwi simulator files
-*.wokwi
+*wokwi*
 diagram.json
+
+# KiCad
+*.kicad_pcb-bak
+*.kicad_prl
+*backups*

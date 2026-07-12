@@ -10,9 +10,7 @@ An open-source desk buddy that blinks, tells the time, and notices when you're n
     <img src="https://img.shields.io/badge/Licence-MIT-red" alt="MIT">
 </p>
 
----
-
-### Overview
+## Overview
 
 Jarvis is an open-source desktop companion built on an ESP32. It shows a pair of animated eyes on an OLED display, keeps the time synced over WiFi, and uses an ultrasonic sensor to notice when you get close, looking up and reacting when you're near.
 
@@ -26,6 +24,8 @@ The project is designed to be:
 - Hackable and well-documented, as a learning reference for embedded projects.
 
 ### Pinout
+
+The table below maps each component to its ESP32 GPIO. For the full wiring, the complete schematic is available as a [PDF](./docs/schematic.pdf), and the entire [KiCad project](./hardware) is included too, with the BOM and component details across several distributors.
 
 <table>
   <thead>
@@ -85,6 +85,64 @@ The project is designed to be:
 
 ---
 
+## Getting Started
+
+### Prerequisites
+
+- [PlatformIO](https://platformio.org/) (VS Code extension or CLI).
+- An ESP32 board, an SSD1306 OLED and two push buttons _(or just the Wokwi simulator, see below)_.
+
+### Configuration
+
+Wi-Fi credentials are kept out of version control. Copy the template and fill in your own:
+
+```bash
+cp secrets.h.example secrets.h
+```
+
+Then edit `secrets.h` with your network details:
+
+````cpp
+#define WIFI_SSID "your_wifi"
+#define WIFI_PASS "your_password"
+````
+
+### Build & Flash
+
+```bash
+pio run              # compile
+pio run -t upload    # flash to the board
+pio device monitor   # open the serial monitor
+```
+
+### Run in the simulator (no hardware needed)
+
+You can run Jarvis entirely in VS Code without any physical hardware using the [Wokwi](https://wokwi.com/) simulator.
+
+1. Install the **Wokwi Simulator** extension for VS Code.
+2. Create a `wokwi.toml` file in the project root with the following content:
+
+    ```toml
+      [wokwi]
+      version = 1
+      firmware = ".pio/build/jarvis/firmware.bin"
+      elf = ".pio/build/jarvis/firmware.elf"
+    ```
+
+3. Add a `diagram.json` in the project root describing the circuit. You can copy it from the public Wokwi project here: [wokwi.com/projects/469374163665964033](https://wokwi.com/projects/469374163665964033)
+
+4. Set your credentials to Wokwi's guest network in `secrets.h`:
+
+    ```cpp
+    #define WIFI_SSID "Wokwi-GUEST"
+    #define WIFI_PASS ""
+    ```
+
+5. Build the firmware with `pio run`, then open `diagram.json` and start the simulator.
+
+
+---
+
 <h3 align="center">License</h3>
 <pre align="center">Copyright © 2026 Carmen<br><br>Jarvis is open-source and released under the MIT License.<br><br>See <a href="./LICENSE.md">LICENSE.md</a> for the full details.</pre>
 
@@ -95,3 +153,4 @@ The project is designed to be:
         <img src="https://contrib.rocks/image?repo=carmoruda/Jarvis" width="50"/>
     </a>
 </p>
+````
