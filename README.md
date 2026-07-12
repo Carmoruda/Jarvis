@@ -25,7 +25,7 @@ The project is designed to be:
 
 ### Pinout
 
-The table below maps each component to its ESP32 GPIO. For the full wiring, the complete schematic is available as a [PDF](./docs/schematic.pdf), and the entire [KiCad project](./hardware) is included too, with the BOM and component details across several distributors.
+The table below maps each component to its ESP32 GPIO. For the full wiring, the complete schematic is available as a [PDF](./docs/schematic.pdf), and the entire [KiCad project](./docs/jarvis_kicad/) is included too, with the BOM and component details across several distributors.
 
 <table>
   <thead>
@@ -102,10 +102,10 @@ cp secrets.h.example secrets.h
 
 Then edit `secrets.h` with your network details:
 
-````cpp
+```cpp
 #define WIFI_SSID "your_wifi"
 #define WIFI_PASS "your_password"
-````
+```
 
 ### Build & Flash
 
@@ -139,7 +139,6 @@ You can run Jarvis entirely in VS Code without any physical hardware using the [
     ```
 
 5. Build the firmware with `pio run`, then open `diagram.json` and start the simulator.
-
 
 ---
 
