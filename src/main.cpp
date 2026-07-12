@@ -6,6 +6,8 @@
 
 struct Screen {
     public:
+        uint8_t width;
+        uint8_t height;
         uint8_t sda_pin;
         uint8_t scl_pin;
 };
@@ -18,7 +20,7 @@ struct WiFiConfig {
 };
 
 
-constexpr Screen SCREEN = {21, 22};
+constexpr Screen SCREEN = {128, 64, 21, 22};
 constexpr WiFiConfig WIFI_CONFIG = {WIFI_SSID, WIFI_PASS, "pool.ntp.org"};
 
 const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (CET) with daylight saving time
@@ -94,6 +96,8 @@ void setup() {
     connectWiFi();
     syncTime();
 
+    pinMode(BUTTON.pin, INPUT_PULLUP);
+
     delay(100);
 }
 
@@ -104,7 +108,7 @@ void loop() {
     getLocalTime(&time_info);
 
 
-    char hour[3], min[3];   // 2 dígitos + '\0'
+    char hour[3], min[3];   // 2 digits + null terminator
     snprintf(hour, sizeof(hour), "%02d", time_info.tm_hour);
     snprintf(min, sizeof(min), "%02d", time_info.tm_min);
 
