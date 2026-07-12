@@ -38,7 +38,7 @@ The project is designed to be:
   </thead>
   <tbody>
     <tr>
-      <td rowspan="4">OLED Display (SSD1306, I²C)</td>
+      <td rowspan="4"><a href="https://www.lcsc.com/product-detail/C5248080.html">OLED Display (SSD1306, I²C)</a></td>
       <td>VCC</td>
       <td>3V3</td>
       <td>Do not use 5V / VIN</td>
@@ -57,6 +57,28 @@ The project is designed to be:
       <td>SCL</td>
       <td>GPIO22</td>
       <td>I²C clock</td>
+    </tr>
+    <tr>
+      <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html">Next Screen Button</a></td>
+      <td>Pin 1</td>
+      <td>GPIO32</td>
+      <td>INPUT_PULLUP; pressed = LOW</td>
+    </tr>
+    <tr>
+      <td>Pin 2</td>
+      <td>GND</td>
+      <td>Other leg to ground</td>
+    </tr>
+    <tr>
+      <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html">Previous Screen Button</a></td>
+      <td>Pin 1</td>
+      <td>GPIO27</td>
+      <td>INPUT_PULLUP; pressed = LOW</td>
+    </tr>
+    <tr>
+      <td>Pin 2</td>
+      <td>GND</td>
+      <td>Other leg to ground</td>
     </tr>
   </tbody>
 </table>

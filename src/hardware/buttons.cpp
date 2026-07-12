@@ -1,7 +1,7 @@
 #include "buttons.h"
 
-Button upButton = {27, HIGH, HIGH, 0, 50}; // UP button
-Button downButton = {32, HIGH, HIGH, 0, 50}; // DOWN button
+Button upButton = {32, HIGH, HIGH, 0, 50}; // UP button (Next Screen)
+Button downButton = {27, HIGH, HIGH, 0, 50}; // DOWN button (Previous Screen)
 
 void buttonsSetup() {
     pinMode(upButton.pin, INPUT_PULLUP);
