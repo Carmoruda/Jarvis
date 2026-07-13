@@ -16,13 +16,6 @@ struct Screen {
         uint8_t scl_pin;
 };
 
-struct WiFiConfig {
-    public:
-        const char *ssid;
-        const char *password;
-        const char *ntpServer;
-};
-
 enum ScreenStates {
     CLOCK,
     EYES,
@@ -31,7 +24,6 @@ enum ScreenStates {
 };
 
 constexpr Screen SCREEN = {128, 64, 21, 22};
-constexpr WiFiConfig WIFI_CONFIG = {WIFI_SSID, WIFI_PASS, "pool.ntp.org"};
 
 // Screen
 int screen = ScreenStates::CLOCK;
@@ -133,8 +125,8 @@ void loop() {
             break;
         case ScreenStates::EYES:
             u8g2.clearBuffer();
-            u8g2.setFont(u8g2_font_bitcasual_tr);
-            u8g2.drawStr(10, 30, "Eyes screen");
+            u8g2.drawFrame(0, 0, 128, 16);
+            u8g2.drawFrame(0, 17, 128, 47);
             u8g2.sendBuffer();
             break;
         case ScreenStates::WIFI:
