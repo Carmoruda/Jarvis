@@ -33,7 +33,7 @@ void connectWiFi()
 {
     // Display a message while connecting to WiFi
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_bitcasual_tr);
+    u8g2.setFont(u8g2_font_profont11_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth(txt::WIFI_CONNECTING)) / 2, 30, txt::WIFI_CONNECTING);
     u8g2.sendBuffer();
 
@@ -70,7 +70,7 @@ void syncTime()
 {
     // Display a message while syncing time
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_bitcasual_tr);
+    u8g2.setFont(u8g2_font_profont11_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth(txt::SYNCING_TIME)) / 2, 30, txt::SYNCING_TIME);
     u8g2.sendBuffer();
 
