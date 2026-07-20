@@ -10,11 +10,13 @@ An open-source desk buddy that blinks, tells the time, and notices when you're n
     <img src="https://img.shields.io/badge/Licence-MIT-red" alt="MIT">
 </p>
 
+<p align="center">
+    <img src="./docs/assets/screens.png" alt="Jarvis Screenshots" width="400"/>
+</p>
+
 ## Overview
 
 Jarvis is an open-source desktop companion built on an ESP32. It shows a pair of animated eyes on an OLED display, keeps the time synced over WiFi, and uses an ultrasonic sensor to notice when you get close, looking up and reacting when you're near.
-
-<img src="./docs/assets/screens.png" alt="Jarvis Screenshots" width="400" style="margin: 0 auto; display: block;"/>
 
 Timekeeping is handled over the network: the ESP32 connects to WiFi and syncs to an NTP server on boot, with automatic daylight-saving handling for the local timezone, so there's no dedicated RTC to keep set. The eyes are driven by the FluxGarage RoboEyes library, and a button lets you switch between moods and views.
 
