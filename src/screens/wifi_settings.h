@@ -10,15 +10,17 @@
 
 #include "secrets.h"
 
-using namespace std;
-
 struct WiFiConfig {
     const char* ssid;
     const char* password;
     const char* ntpServer;
 };
 
-constexpr WiFiConfig kWifiConfig = {.ssid = WIFI_SSID, .password = WIFI_PASS, .ntpServer = "pool.ntp.org"};
+constexpr WiFiConfig kWifiConfig = {
+    .ssid = WIFI_SSID,
+    .password = WIFI_PASS,
+    .ntpServer = "pool.ntp.org"
+};
 
 void ConnectWifi();
 void DrawWifiSettings(const String &ssid, const String &ip, const String &status, int rssi);
