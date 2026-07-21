@@ -9,4 +9,7 @@ struct WiFiConfig {
 
 extern WiFiConfig WIFI_CONFIG;
 
-void drawWiFiSettings();
+void connectWiFi();
+void drawWiFiSettings(String ssid, String ip, String status, int rssi);
+void resetWiFiStatus();
+void WiFiStatus();
