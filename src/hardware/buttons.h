@@ -1,4 +1,12 @@
+// Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
+// OLED display configuration.
+//
+// Declares the shared U8g2 display instance used to render the application
+// screens. The display uses an SSD1306 controller, a 128x64 resolution,
+// full-buffer rendering, and the hardware I2C interface.
+
 #pragma once
+
 #include <Arduino.h>
 
 struct Button {

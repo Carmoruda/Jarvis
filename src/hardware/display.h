@@ -1,4 +1,12 @@
+// Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
+// OLED display configuration.
+//
+// Declares the shared U8g2 display instance used to render the application
+// screens. Display controller, dimensions, rotation, and I2C configuration
+// are defined in the corresponding implementation file.
+
 #pragma once
+
 #include <U8g2lib.h>
 
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
