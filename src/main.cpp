@@ -1,31 +1,33 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <WiFi.h>
-#include "secrets.h"
-#include "strings.h"
 #include "screens/clock.h"
 #include "screens/wifi_settings.h"
 #include "screens/weather.h"
 #include "hardware/display.h"
 #include "hardware/buttons.h"
 
-struct Screen {
+namespace {
+    struct Screen {
     public:
         uint8_t width;
         uint8_t height;
         uint8_t sda_pin;
         uint8_t scl_pin;
-};
+    };
+}
 
-enum ScreenStates {
-    kEyes,
-    kClock,
-    kWeather,
-    kWifi,
-    kNumScreens
-};
+namespace {
+    enum ScreenStates {
+        kEyes,
+        kClock,
+        kWeather,
+        kWifi,
+        kNumScreens
+    };
+}
 
-constexpr Screen kScreen = {128, 64, 21, 22};
+constexpr Screen kScreen = {.width = 128, .height = 64, .sda_pin = 21, .scl_pin = 22};
 
 // Screen
 int screen = ScreenStates::kClock;
@@ -50,7 +52,7 @@ void setup() {
 
 void loop() {
     // Reconnect to WiFi if disconnected
-    if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
+    if (WiFiClass::status() != WL_CONNECTED) WiFi.reconnect();
 
     if (readButton(up_button) && screen < ScreenStates::kNumScreens - 1) {
         screen++;
@@ -69,18 +71,18 @@ void loop() {
         if (screen == ScreenStates::kClock) {
             resetPrevTime();
         } else if (screen == ScreenStates::kWifi) {
-            resetWifiStatus();
+            ResetWifiStatus();
         }
 
     }
 
     switch (screen) {
-        // case ScreenStates::kEyes:
-        //     u8g2.clearBuffer();
-        //     u8g2.drawFrame(0, 0, 128, 16);
-        //     u8g2.drawFrame(0, 17, 128, 47);
-        //     u8g2.sendBuffer();
-        //     break;
+        case ScreenStates::kEyes:
+            u8g2.clearBuffer();
+            u8g2.drawFrame(0, 0, 128, 16);
+            u8g2.drawFrame(0, 17, 128, 47);
+            u8g2.sendBuffer();
+            break;
         case ScreenStates::kClock:
             clockSetup();
             break;
@@ -88,8 +90,9 @@ void loop() {
             getWeather();
             break;
         case ScreenStates::kWifi:
-            wifiStatus();
+            WifiStatus();
             break;
+        default: ;
     }
 
     u8g2.sendBuffer();
