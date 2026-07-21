@@ -43,7 +43,7 @@ void setup() {
     u8g2.begin();
 
     ConnectWifi();
-    syncTime();
+    SyncTime();
 
     buttonsSetup();
 
@@ -69,7 +69,7 @@ void loop() {
         Serial.println(screen);
 
         if (screen == ScreenStates::kClock) {
-            resetPrevTime();
+            ResetPrevTime();
         } else if (screen == ScreenStates::kWifi) {
             ResetWifiStatus();
         }
@@ -84,7 +84,7 @@ void loop() {
             u8g2.sendBuffer();
             break;
         case ScreenStates::kClock:
-            clockSetup();
+            ClockSetup();
             break;
         case ScreenStates::kWeather:
             getWeather();

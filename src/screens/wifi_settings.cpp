@@ -6,8 +6,8 @@
 // WiFi status variables to track changes
 static String prev_ssid = "N/A";
 static String prev_ip = "N/A";
-static String prevStatus = "N/A";
-static int prevRssi = -1;
+static String prev_status = "N/A";
+static int prev_rssi = -1;
 
 void ConnectWifi()
 {
@@ -67,8 +67,8 @@ void DrawWifiSettings(const String &ssid, const String &ip, const String &status
 void ResetWifiStatus() {
     prev_ssid = "N/A";
     prev_ip = "N/A";
-    prevStatus = "N/A";
-    prevRssi = -1;
+    prev_status = "N/A";
+    prev_rssi = -1;
 }
 
 void WifiStatus()
@@ -80,11 +80,11 @@ void WifiStatus()
     const int rssi = WiFi.RSSI();
 
     // Only update the display if the time has changed
-    if (ssid != prev_ssid || ip != prev_ip || status != prevStatus || rssi != prevRssi) {
+    if (ssid != prev_ssid || ip != prev_ip || status != prev_status || rssi != prev_rssi) {
         DrawWifiSettings(ssid, ip, status, rssi);
         prev_ssid = ssid;
         prev_ip = ip;
-        prevStatus = status;
-        prevRssi = rssi;
+        prev_status = status;
+        prev_rssi = rssi;
     }
 }
