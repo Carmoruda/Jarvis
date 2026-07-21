@@ -1,9 +1,10 @@
 #pragma once
 
 namespace txt {
-    constexpr const char* WIFI_CONNECTING = "Connecting to WiFi...";
-    constexpr const char* WIFI_CONNECTED  = "WiFi connected!";
-    constexpr const char* WIFI_FAILED     = "WiFi failed!";
-    constexpr const char* SYNCING_TIME    = "Syncing time...";
-    constexpr const char* WIFI_SETTINGS_TITLE = "WiFi Info";
+    constexpr const char* kWifiConnecting       = "Connecting to WiFi...";
+    constexpr const char* kWifiConnected        = "WiFi connected!";
+    constexpr const char* kWifiFailed           = "WiFi failed!";
+    constexpr const char* kSyncingTime          = "Syncing time...";
+    constexpr const char* kWifiSettingsTitle    = "WiFi Status";
+    constexpr const char* kWeatherTitle         = "Weather";
 }

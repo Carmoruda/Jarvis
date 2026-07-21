@@ -18,29 +18,29 @@ struct Screen {
 };
 
 enum ScreenStates {
-    EYES,
-    CLOCK,
-    WEATHER,
-    WIFI,
-    NUM_SCREENS
+    kEyes,
+    kClock,
+    kWeather,
+    kWifi,
+    kNumScreens
 };
 
-constexpr Screen SCREEN = {128, 64, 21, 22};
+constexpr Screen kScreen = {128, 64, 21, 22};
 
 // Screen
-int screen = ScreenStates::CLOCK;
-int lastScreen = -1;
+int screen = ScreenStates::kClock;
+int last_screen = -1;
 
 void setup() {
     Serial.begin(115200);
 
-    Wire.begin(SCREEN.sda_pin, SCREEN.scl_pin);
+    Wire.begin(kScreen.sda_pin, kScreen.scl_pin);
     Wire.setClock(400000);
 
     // Initialize the display
     u8g2.begin();
 
-    connectWiFi();
+    ConnectWifi();
     syncTime();
 
     buttonsSetup();
@@ -52,43 +52,43 @@ void loop() {
     // Reconnect to WiFi if disconnected
     if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
 
-    if (readButton(upButton) && screen < ScreenStates::NUM_SCREENS - 1) {
+    if (readButton(up_button) && screen < ScreenStates::kNumScreens - 1) {
         screen++;
     }
-    if (readButton(downButton) && screen > 0) {
+    if (readButton(down_button) && screen > 0) {
         screen--;
     }
 
-    if (screen != lastScreen) {
+    if (screen != last_screen) {
         u8g2.clearBuffer();
         u8g2.sendBuffer();
-        lastScreen = screen;
+        last_screen = screen;
         Serial.print("Screen changed to: ");
         Serial.println(screen);
 
-        if (screen == ScreenStates::CLOCK) {
+        if (screen == ScreenStates::kClock) {
             resetPrevTime();
-        } else if (screen == ScreenStates::WIFI) {
-            resetWiFiStatus();
+        } else if (screen == ScreenStates::kWifi) {
+            resetWifiStatus();
         }
 
     }
 
     switch (screen) {
-        // case ScreenStates::EYES:
+        // case ScreenStates::kEyes:
         //     u8g2.clearBuffer();
         //     u8g2.drawFrame(0, 0, 128, 16);
         //     u8g2.drawFrame(0, 17, 128, 47);
         //     u8g2.sendBuffer();
         //     break;
-        case ScreenStates::CLOCK:
+        case ScreenStates::kClock:
             clockSetup();
             break;
-        // case ScreenStates::WEATHER:
-        //     weather();
-        //     break;
-        case ScreenStates::WIFI:
-            WiFiStatus();
+        case ScreenStates::kWeather:
+            getWeather();
+            break;
+        case ScreenStates::kWifi:
+            wifiStatus();
             break;
     }
 
