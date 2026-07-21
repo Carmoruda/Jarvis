@@ -7,21 +7,7 @@ const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (
 static int prev_hour = -1;
 static int prev_min = -1;
 
-void SyncTime()
-{
-    // Display a message while syncing time
-    u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_profont11_tr);
-    u8g2.drawStr((128 - u8g2.getStrWidth(txt::kSyncingTime)) / 2, 30, txt::kSyncingTime);
-    u8g2.sendBuffer();
-
-    // Configure time using NTP
-    configTzTime(time_zone, kWifiConfig.ntpServer);
-
-    delay(1000);
-}
-
-void DrawClock(const String& hour_str, const String& min_str) {
+static void DrawClock(const String& hour_str, const String& min_str) {
 
     // Clear the buffer and set the font
     u8g2.clearBuffer();
@@ -36,6 +22,20 @@ void DrawClock(const String& hour_str, const String& min_str) {
     u8g2.print(min_str);
 
     u8g2.sendBuffer();
+}
+
+void SyncTime()
+{
+    // Display a message while syncing time
+    u8g2.clearBuffer();
+    u8g2.setFont(u8g2_font_profont11_tr);
+    u8g2.drawStr((128 - u8g2.getStrWidth(txt::kSyncingTime)) / 2, 30, txt::kSyncingTime);
+    u8g2.sendBuffer();
+
+    // Configure time using NTP
+    configTzTime(time_zone, kWifiConfig.ntpServer);
+
+    delay(1000);
 }
 
 void ResetPrevTime() {

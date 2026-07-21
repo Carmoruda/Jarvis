@@ -45,7 +45,7 @@ void setup() {
     ConnectWifi();
     SyncTime();
 
-    buttonsSetup();
+    ButtonsSetup();
 
     delay(100);
 }
@@ -54,10 +54,10 @@ void loop() {
     // Reconnect to WiFi if disconnected
     if (WiFiClass::status() != WL_CONNECTED) WiFi.reconnect();
 
-    if (readButton(up_button) && screen < ScreenStates::kNumScreens - 1) {
+    if (ReadButton(up_button) && screen < ScreenStates::kNumScreens - 1) {
         screen++;
     }
-    if (readButton(down_button) && screen > 0) {
+    if (ReadButton(down_button) && screen > 0) {
         screen--;
     }
 
@@ -87,7 +87,7 @@ void loop() {
             ClockSetup();
             break;
         case ScreenStates::kWeather:
-            getWeather();
+            UpdateWeather();
             break;
         case ScreenStates::kWifi:
             WifiStatus();

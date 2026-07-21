@@ -23,6 +23,7 @@ constexpr WiFiConfig kWifiConfig = {
 };
 
 void ConnectWifi();
-void DrawWifiSettings(const String &ssid, const String &ip, const String &status, int rssi);
-void ResetWifiStatus();
 void WifiStatus();
+void ResetWifiStatus();
+static void DrawWifiSettings(const String &ssid, const String &ip, const String &status, int rssi);
+

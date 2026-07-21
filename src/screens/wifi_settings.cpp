@@ -45,7 +45,7 @@ void ConnectWifi()
     }
 }
 
-void DrawWifiSettings(const String &ssid, const String &ip, const String &status, const int rssi) {
+static void DrawWifiSettings(const String &ssid, const String &ip, const String &status, const int rssi) {
     u8g2.clearBuffer();
 
     u8g2.drawLine(5, 15, 123, 15);
