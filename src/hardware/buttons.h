@@ -4,17 +4,17 @@
 struct Button {
     public:
         uint8_t pin;
-        int lastState;
-        int stableState;
-        unsigned long lastChangeTime;
-        const unsigned long debounceTime;
+        int last_state;
+        int stable_state;
+        unsigned long last_change_time;
+        const unsigned long debounce_time;
 };
 
-extern Button upButton;
-extern Button downButton;
+extern Button up_button;
+extern Button down_button;
 
 extern int screen;
-extern int lastScreen;
+extern int last_screen;
 
-bool readButton(Button &button);
-void buttonsSetup();
+bool ReadButton(Button &button);
+void ButtonsSetup();
