@@ -57,7 +57,7 @@ static void DrawWeather() {
     u8g2.setFont(u8g2_font_profont22_tr);
 
     char temperature_str[8];
-    snprintf(temperature_str, sizeof(temperature_str), "%.1f º", WeatherData.temperature);
+    snprintf(temperature_str, sizeof(temperature_str), "%.1f", WeatherData.temperature);
     u8g2.drawStr(5, 40, temperature_str);
 
 
@@ -153,8 +153,7 @@ void UpdateWeather() {
         last_weather_update = now;
         weather_changed = true;
         FetchWeather();
-    } else weather_changed = false;
-
+    }
 
     DrawWeather();
 }
