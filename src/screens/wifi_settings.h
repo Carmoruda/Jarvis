@@ -1,15 +1,26 @@
+// Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
+// Wi-Fi connection and status screen.
+//
+// Manages connecting to Wi-Fi, NTP time sync, and rendering the
+// Wi-Fi status screen. Connection credentials come from secrets.h.
+// This file owns the Wi-Fi screen only; clock/eye rendering lives elsewhere.
+//
+
 #pragma once
 
+#include "secrets.h"
+
+using namespace std;
+
 struct WiFiConfig {
-    public:
-        const char *ssid;
-        const char *password;
-        const char *ntpServer;
+    const char* ssid;
+    const char* password;
+    const char* ntpServer;
 };
 
-extern WiFiConfig WIFI_CONFIG;
+constexpr WiFiConfig kWifiConfig = {.ssid = WIFI_SSID, .password = WIFI_PASS, .ntpServer = "pool.ntp.org"};
 
-void connectWiFi();
-void drawWiFiSettings(String ssid, String ip, String status, int rssi);
-void resetWiFiStatus();
-void WiFiStatus();
+void ConnectWifi();
+void DrawWifiSettings(const String &ssid, const String &ip, const String &status, int rssi);
+void ResetWifiStatus();
+void WifiStatus();
