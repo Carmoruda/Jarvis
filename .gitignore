@@ -89,3 +89,6 @@ diagram.json
 *.kicad_pcb-bak
 *.kicad_prl
 *backups*
+
+# JetBrains
+.idea
