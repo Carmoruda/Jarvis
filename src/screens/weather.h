@@ -6,10 +6,11 @@ struct Weather {
     public:
         int condition_id;
         String weather;
+        String description;
         const uint8_t* icon;
         float temperature;
         float humidity;
-        float pressure;
+        float wind_speed;
 };
 
 struct WeatherApiConfig {
@@ -24,7 +25,7 @@ struct WeatherApiConfig {
 extern Weather WeatherData;
 
 constexpr WeatherApiConfig kOpenWeather = {
-    .city = "Madrid",
+    .city = "Coruña",
     .country_code = "ES",
     .units = "metric",
     .api_key = WEATHER_API_KEY,

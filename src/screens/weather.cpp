@@ -21,18 +21,20 @@ static unsigned long last_weather_update = -kOpenWeather.call_interval;
 Weather WeatherData = {
     .condition_id = -1,
     .weather = "N/A",
+    .description = "N/A",
     .icon = nullptr,
     .temperature = -10000,
     .humidity = -10000,
-    .pressure = -10000
+    .wind_speed = -10000
 };
 
 static void DrawWeather() {
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_helvR08_tr);
+    u8g2.drawLine(5, 15, 123, 15);
+    u8g2.setFont(u8g2_font_helvR08_tf);
 
     // Weather City
-    u8g2.drawStr(5, 10, kOpenWeather.city);
+    u8g2.drawUTF8(5, 10, kOpenWeather.city);
 
     // Clock
     struct tm time_info{};
@@ -51,9 +53,7 @@ static void DrawWeather() {
     prev_min = time_info.tm_min;
 
     const String time_str = String(hour) + ":" + String(min);
-
     DrawRightAligned(time_str.c_str(), 10, 5);
-    u8g2.drawLine(5, 15, 123, 15);
 
     if (weather_status != txt::kWeatherFetchOkay) {
         DrawHorizontallyCentered(weather_status, 40);
@@ -66,12 +66,29 @@ static void DrawWeather() {
 
     char temperature_str[12];
     snprintf(temperature_str, sizeof(temperature_str), "%.0f°", WeatherData.temperature);
-    u8g2.drawUTF8(5, 50, temperature_str);
+    u8g2.drawUTF8(5, 47, temperature_str);
 
-    // Weather Icon
-    u8g2.drawBitmap(95, 25, icons::kIconWidth / 8, icons::kIconHeight, WeatherData.icon);
+    // Condition Icon
+    u8g2.drawBitmap(99, 22, icons::kIconWidth / 8, icons::kIconHeight, WeatherData.icon);
+
+    // Condition text
+    u8g2.setFont(u8g2_font_helvR08_tf);
+    DrawRightAligned(WeatherData.description, 62, 5);
+
+    // Humidity
+    char humidity_str[12];
+    snprintf(humidity_str, sizeof(humidity_str), "%.0f%%", WeatherData.humidity);
+    u8g2.drawXBMP(5, 54, icons::kIconSmallWidth, icons::kIconSmallHeight, icons::kIconHumidity);
+    u8g2.drawStr(17, 62, humidity_str);
+
+    // Wind Speed
+    // char wind_speed_str[12];
+    // snprintf(wind_speed_str, sizeof(wind_speed_str), "%.0fkm", WeatherData.wind_speed);
+    // u8g2.drawXBMP(45, 54, icons::kIconSmallWidth, icons::kIconSmallHeight, icons::kIconWindSpeed);
+    // u8g2.drawStr(55, 62, wind_speed_str);
 
     u8g2.sendBuffer();
+
 }
 
 static void FetchWeather() {
@@ -116,9 +133,11 @@ static int ParseWeatherData (const String& payload) {
 
     WeatherData.condition_id = doc["weather"][0]["id"].as<int>();
     WeatherData.weather = doc["weather"][0]["main"].as<String>();
+    WeatherData.description = doc["weather"][0]["description"].as<String>();
+    WeatherData.description[0] = toupper(WeatherData.description[0]);
     WeatherData.temperature = doc["main"]["temp"].as<float>();
     WeatherData.humidity =  doc["main"]["humidity"].as<float>();
-    WeatherData.pressure =  doc["main"]["pressure"].as<float>();
+    WeatherData.wind_speed =  doc["wind"]["speed"].as<float>();
 
     return 1;
 }
