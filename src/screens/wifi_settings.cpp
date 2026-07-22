@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include "strings.h"
 #include "hardware/display.h"
 #include "screens/wifi_settings.h"
 
@@ -12,7 +13,7 @@ void ConnectWifi()
 {
     // Display a message while connecting to WiFi
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_profont11_tr);
+    u8g2.setFont(u8g2_font_helvR08_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth(txt::kWifiConnecting)) / 2, 30, txt::kWifiConnecting);
     u8g2.sendBuffer();
 
@@ -51,7 +52,7 @@ static void DrawWifiSettings(const String &ssid, const String &ip, const String 
     u8g2.drawLine(5, 15, 123, 15);
 
     // Screen title
-    u8g2.setFont(u8g2_font_profont11_tr);
+    u8g2.setFont(u8g2_font_helvR08_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth(txt::kWifiSettingsTitle)) / 2, 10, txt::kWifiSettingsTitle);
 
     // WiFi settings

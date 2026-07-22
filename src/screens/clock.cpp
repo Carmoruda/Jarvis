@@ -1,4 +1,5 @@
 #include "clock.h"
+#include "strings.h"
 #include "screens/wifi_settings.h"
 #include "hardware/display.h"
 
@@ -11,7 +12,7 @@ static void DrawClock(const String& hour_str, const String& min_str) {
 
     // Clear the buffer and set the font
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_freedoomr25_tn);
+    u8g2.setFont(u8g2_font_helvB24_tf);
 
     const String time_str = hour_str + ":" + min_str;
 
@@ -28,7 +29,7 @@ void SyncTime()
 {
     // Display a message while syncing time
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_profont11_tr);
+    u8g2.setFont(u8g2_font_helvR08_tr);
     u8g2.drawStr((128 - u8g2.getStrWidth(txt::kSyncingTime)) / 2, 30, txt::kSyncingTime);
     u8g2.sendBuffer();
 

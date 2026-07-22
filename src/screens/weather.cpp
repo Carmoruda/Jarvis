@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include "strings.h"
 #include "screens/weather.h"
 #include "hardware/display.h"
 
@@ -12,6 +13,7 @@ static String url = "https://api.openweathermap.org/data/2.5/weather?q=" + Strin
 static int prev_hour = -1;
 static int prev_min = -1;
 static bool weather_changed = false;
+static String weather_status = txt::kGetWeatherInfo;
 
 static unsigned long last_weather_update = -kOpenWeather.call_interval;
 
@@ -26,8 +28,7 @@ Weather WeatherData = {
 
 static void DrawWeather() {
     u8g2.clearBuffer();
-
-    u8g2.setFont(u8g2_font_profont11_tr);
+    u8g2.setFont(u8g2_font_helvR08_tr);
 
     // Weather City
     u8g2.drawStr(5, 10, kOpenWeather.city);
@@ -53,43 +54,46 @@ static void DrawWeather() {
     u8g2.drawStr(95, 10, time_str.c_str());
     u8g2.drawLine(5, 15, 123, 15);
 
+    if (weather_status != txt::kWeatherFetchOkay) {
+        u8g2.drawStr((128 - u8g2.getStrWidth(weather_status.c_str())) / 2, 40, weather_status.c_str());
+        u8g2.sendBuffer();
+        return;
+    }
+
     // Temperature
-    u8g2.setFont(u8g2_font_profont22_tr);
+    u8g2.setFont(u8g2_font_helvB24_tf);
 
-    char temperature_str[8];
-    snprintf(temperature_str, sizeof(temperature_str), "%.1f", WeatherData.temperature);
-    u8g2.drawStr(5, 40, temperature_str);
-
-
+    char temperature_str[12];
+    snprintf(temperature_str, sizeof(temperature_str), "%.0fº", WeatherData.temperature);
+    u8g2.drawUTF8(5, 50, temperature_str);
 
     u8g2.sendBuffer();
 }
 
 static void FetchWeather() {
+    // Display a message while fetching weather info
+    u8g2.clearBuffer();
+    u8g2.setFont(u8g2_font_helvR08_tr);
+    u8g2.drawStr((128 - u8g2.getStrWidth(weather_status.c_str())) / 2, 30, weather_status.c_str());
+    u8g2.sendBuffer();
+
     if (!http.begin(url)) {
-        u8g2.clearBuffer();
-        u8g2.drawStr((128 - u8g2.getStrWidth(txt::kApiCallFailed)) / 2, 30, txt::kApiCallFailed);
-        u8g2.sendBuffer();
+        weather_status = txt::kApiCallFailed;
         return;
     }
 
     const int code = http.GET();
-    int parse_data = 0;
 
-    if (code > 0) {
-        const String payload = http.getString();
-        parse_data = ParseWeatherData(payload);
-    } else {
-        u8g2.clearBuffer();
-        u8g2.drawStr((128 - u8g2.getStrWidth(txt::kHTTPError)) / 2, 30, txt::kHTTPError);
-        u8g2.sendBuffer();
-
-        Serial.print("HTTP error: ");
-        Serial.println(code);
+    if (code != 200) {
+        weather_status = txt::kHTTPError;
+        http.end();
+        return;
     }
 
-    if (parse_data == 1) {
+    if (ParseWeatherData(http.getString())) {
+        weather_status = txt::kWeatherFetchOkay;
         AssignWeatherIcon();
+        weather_changed = true;
     }
 
     http.end();
