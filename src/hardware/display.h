@@ -10,3 +10,7 @@
 #include <U8g2lib.h>
 
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
+
+void DrawRightAligned(const String& text, int y, int right_margin = 5);
+void DrawHorizontallyCentered(const String& text, int y);
+void DrawVerticallyCentered(const String& text, int x);

@@ -1,3 +1,10 @@
+// Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
+// User-facing text definitions.
+//
+// Defines the text displayed by the application for connection status,
+// time synchronization, weather updates, and error messages. Strings are
+// grouped in the txt namespace.
+
 #pragma once
 
 namespace txt {

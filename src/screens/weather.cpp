@@ -52,11 +52,11 @@ static void DrawWeather() {
 
     const String time_str = String(hour) + ":" + String(min);
 
-    u8g2.drawStr(95, 10, time_str.c_str());
+    DrawRightAligned(time_str.c_str(), 10, 5);
     u8g2.drawLine(5, 15, 123, 15);
 
     if (weather_status != txt::kWeatherFetchOkay) {
-        u8g2.drawStr((128 - u8g2.getStrWidth(weather_status.c_str())) / 2, 40, weather_status.c_str());
+        DrawHorizontallyCentered(weather_status, 40);
         u8g2.sendBuffer();
         return;
     }
@@ -65,11 +65,11 @@ static void DrawWeather() {
     u8g2.setFont(u8g2_font_helvB24_tf);
 
     char temperature_str[12];
-    snprintf(temperature_str, sizeof(temperature_str), "%.0fº", WeatherData.temperature);
+    snprintf(temperature_str, sizeof(temperature_str), "%.0f°", WeatherData.temperature);
     u8g2.drawUTF8(5, 50, temperature_str);
 
     // Weather Icon
-    u8g2.drawBitmap(95, 25, kIconWidth / 8, kIconHeight, WeatherData.icon);
+    u8g2.drawBitmap(95, 25, icons::kIconWidth / 8, icons::kIconHeight, WeatherData.icon);
 
     u8g2.sendBuffer();
 }
@@ -78,7 +78,7 @@ static void FetchWeather() {
     // Display a message while fetching weather info
     u8g2.clearBuffer();
     u8g2.setFont(u8g2_font_helvR08_tr);
-    u8g2.drawStr((128 - u8g2.getStrWidth(weather_status.c_str())) / 2, 30, weather_status.c_str());
+    DrawHorizontallyCentered(weather_status, 30);
     u8g2.sendBuffer();
 
     if (!http.begin(url)) {
@@ -109,7 +109,7 @@ static int ParseWeatherData (const String& payload) {
 
     if (error) {
         u8g2.clearBuffer();
-        u8g2.drawStr((128 - u8g2.getStrWidth(txt::kJSONDeserializationError)) / 2, 30, txt::kJSONDeserializationError);
+        DrawHorizontallyCentered(txt::kJSONDeserializationError,30);
         u8g2.sendBuffer();
         return 0;
     }
@@ -126,16 +126,16 @@ static int ParseWeatherData (const String& payload) {
 static const uint8_t* AssignWeatherIcon() {
     const int id = WeatherData.condition_id;
 
-    if (id >= 200 && id < 300) return kIconThunderstorm;
-    if (id >= 300 && id < 400) return kIconDrizzle;
-    if (id >= 500 && id < 510) return kIconRain;
-    if (id == 511) return kIconSnow;
-    if (id >= 600 && id < 700) return kIconSnow;
-    if (id >= 700 && id < 800) return kIconAtmosphere;
-    if (id == 800) return kIconClear;
-    if (id == 801) return kIconFewClouds;
-    if (id == 802) return kIconScatteredClouds;
-    if (id > 802 && id < 900) return kIconClouds;
+    if (id >= 200 && id < 300) return icons::kIconThunderstorm;
+    if (id >= 300 && id < 400) return icons::kIconDrizzle;
+    if (id >= 500 && id < 510) return icons::kIconRain;
+    if (id == 511) return icons::kIconSnow;
+    if (id >= 600 && id < 700) return icons::kIconSnow;
+    if (id >= 700 && id < 800) return icons::kIconAtmosphere;
+    if (id == 800) return icons::kIconClear;
+    if (id == 801) return icons::kIconFewClouds;
+    if (id == 802) return icons::kIconScatteredClouds;
+    if (id > 802 && id < 900) return icons::kIconClouds;
 
     return nullptr;
 }

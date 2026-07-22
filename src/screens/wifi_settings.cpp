@@ -14,7 +14,7 @@ void ConnectWifi()
     // Display a message while connecting to WiFi
     u8g2.clearBuffer();
     u8g2.setFont(u8g2_font_helvR08_tr);
-    u8g2.drawStr((128 - u8g2.getStrWidth(txt::kWifiConnecting)) / 2, 30, txt::kWifiConnecting);
+    DrawHorizontallyCentered(txt::kWifiConnecting, 30);
     u8g2.sendBuffer();
 
     // Connect to WiFi
@@ -32,14 +32,14 @@ void ConnectWifi()
     if (WiFiClass::status() == WL_CONNECTED) {
 
         u8g2.clearBuffer();
-        u8g2.drawStr((128 - u8g2.getStrWidth(txt::kWifiConnected)) / 2, 30, txt::kWifiConnected);
+        DrawHorizontallyCentered(txt::kWifiConnected, 30);
         u8g2.sendBuffer();
 
         delay(500);
 
     } else {
         u8g2.clearBuffer();
-        u8g2.drawStr((128 - u8g2.getStrWidth(txt::kWifiFailed)) / 2, 30, txt::kWifiFailed);
+        DrawHorizontallyCentered(txt::kWifiFailed, 30);
         u8g2.sendBuffer();
 
         delay(1500);
@@ -53,7 +53,7 @@ static void DrawWifiSettings(const String &ssid, const String &ip, const String 
 
     // Screen title
     u8g2.setFont(u8g2_font_helvR08_tr);
-    u8g2.drawStr((128 - u8g2.getStrWidth(txt::kWifiSettingsTitle)) / 2, 10, txt::kWifiSettingsTitle);
+    DrawHorizontallyCentered(txt::kWifiSettingsTitle, 10);
 
     // WiFi settings
     u8g2.drawStr(5, 30, ("SSID: " + ssid).c_str());
