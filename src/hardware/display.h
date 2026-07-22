@@ -1,9 +1,10 @@
 // Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
-// OLED display configuration.
+// OLED display configuration and drawing utilities.
 //
 // Declares the shared U8g2 display instance used to render the application
-// screens. Display controller, dimensions, rotation, and I2C configuration
-// are defined in the corresponding implementation file.
+// screens. Also provides helpers for drawing horizontally or vertically
+// aligned text. The display uses an SSD1306 controller, a 128x64 resolution,
+// full-buffer rendering, and the hardware I2C interface.
 
 #pragma once
 
