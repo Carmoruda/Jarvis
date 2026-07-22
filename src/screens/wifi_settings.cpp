@@ -1,5 +1,5 @@
 #include <WiFi.h>
-#include "strings.h"
+#include "ui/strings.h"
 #include "hardware/display.h"
 #include "screens/wifi_settings.h"
 

@@ -6,7 +6,7 @@ struct Weather {
     public:
         int condition_id;
         String weather;
-        String icon;
+        const uint8_t* icon;
         float temperature;
         float humidity;
         float pressure;
@@ -34,5 +34,5 @@ constexpr WeatherApiConfig kOpenWeather = {
 static void DrawWeather();
 static void FetchWeather();
 static int ParseWeatherData (const String& payload);
-static void AssignWeatherIcon();
+static const uint8_t* AssignWeatherIcon();
 void UpdateWeather();

@@ -1,7 +1,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-#include "strings.h"
+#include "ui/strings.h"
+#include "ui/icons.h"
 #include "screens/weather.h"
 #include "hardware/display.h"
 
@@ -20,7 +21,7 @@ static unsigned long last_weather_update = -kOpenWeather.call_interval;
 Weather WeatherData = {
     .condition_id = -1,
     .weather = "N/A",
-    .icon = "N/A",
+    .icon = nullptr,
     .temperature = -10000,
     .humidity = -10000,
     .pressure = -10000
@@ -67,6 +68,9 @@ static void DrawWeather() {
     snprintf(temperature_str, sizeof(temperature_str), "%.0fº", WeatherData.temperature);
     u8g2.drawUTF8(5, 50, temperature_str);
 
+    // Weather Icon
+    u8g2.drawBitmap(95, 25, kIconWidth / 8, kIconHeight, WeatherData.icon);
+
     u8g2.sendBuffer();
 }
 
@@ -92,7 +96,7 @@ static void FetchWeather() {
 
     if (ParseWeatherData(http.getString())) {
         weather_status = txt::kWeatherFetchOkay;
-        AssignWeatherIcon();
+        WeatherData.icon = AssignWeatherIcon();
         weather_changed = true;
     }
 
@@ -107,10 +111,6 @@ static int ParseWeatherData (const String& payload) {
         u8g2.clearBuffer();
         u8g2.drawStr((128 - u8g2.getStrWidth(txt::kJSONDeserializationError)) / 2, 30, txt::kJSONDeserializationError);
         u8g2.sendBuffer();
-
-        Serial.print("JSON deserialization error: ");
-        Serial.println(error.c_str());
-
         return 0;
     }
 
@@ -120,34 +120,24 @@ static int ParseWeatherData (const String& payload) {
     WeatherData.humidity =  doc["main"]["humidity"].as<float>();
     WeatherData.pressure =  doc["main"]["pressure"].as<float>();
 
-    Serial.println(WeatherData.condition_id);
-    Serial.println(WeatherData.weather);
-    Serial.println(WeatherData.temperature);
-    Serial.println(WeatherData.humidity);
-    Serial.println(WeatherData.pressure);
-
     return 1;
 }
 
-static void AssignWeatherIcon() {
+static const uint8_t* AssignWeatherIcon() {
     const int id = WeatherData.condition_id;
 
-    if (id >= 200 && id < 300) Serial.println("Thunderstorm");
-    else if (id >= 300 && id < 400) Serial.println("Drizzle");
-    else if (id >= 500 && id < 600) Serial.println("Rain");
-    else if (id >= 600 && id < 700) Serial.println("Snow");
-    else if (id == 701) Serial.println("Mist");
-    else if (id == 711) Serial.println("Smoke");
-    else if (id == 721) Serial.println("Haze");
-    else if (id == 731 || id == 761) Serial.println("Dust");
-    else if (id == 741) Serial.println("Fog");
-    else if (id == 751) Serial.println("Sand");
-    else if (id == 762) Serial.println("Ash");
-    else if (id == 771) Serial.println("Squall");
-    else if (id == 781) Serial.println("Tornado");
-    else if (id == 800) Serial.println("Clear");
-    else if (id > 800 && id < 900) Serial.println("Clouds");
-    else Serial.println("Error");
+    if (id >= 200 && id < 300) return kIconThunderstorm;
+    if (id >= 300 && id < 400) return kIconDrizzle;
+    if (id >= 500 && id < 510) return kIconRain;
+    if (id == 511) return kIconSnow;
+    if (id >= 600 && id < 700) return kIconSnow;
+    if (id >= 700 && id < 800) return kIconAtmosphere;
+    if (id == 800) return kIconClear;
+    if (id == 801) return kIconFewClouds;
+    if (id == 802) return kIconScatteredClouds;
+    if (id > 802 && id < 900) return kIconClouds;
+
+    return nullptr;
 }
 
 void UpdateWeather() {
