@@ -8,16 +8,18 @@ const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (
 static int prev_hour = -1;
 static int prev_min = -1;
 
-static void DrawClock(const String& hour_str, const String& min_str) {
-
-    // Clear the buffer and set the font
+static void DrawClock(const String& hour_str, const String& min_str, const String& date) {
     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_helvB24_tf);
+    u8g2.drawLine(5, 15, 123, 15);
 
+    // Date
+    u8g2.setFont(u8g2_font_helvR08_tr);
+    DrawHorizontallyCentered(date, 10);
+
+    // Time
+    u8g2.setFont(u8g2_font_helvR24_tf);
     const String time_str = hour_str + ":" + min_str;
-
-    // Draw the time in the center of the screen
-    DrawHorizontallyCentered(time_str, (64 + u8g2.getMaxCharHeight()) / 2);
+    DrawHorizontallyCentered(time_str, ((70 + u8g2.getMaxCharHeight())) / 2);
 
     u8g2.sendBuffer();
 }
@@ -51,9 +53,12 @@ void ClockSetup()
     snprintf(hour, sizeof(hour), "%02d", time_info.tm_hour);
     snprintf(min, sizeof(min), "%02d", time_info.tm_min);
 
+    const String date = String(txt::kWeekdayNames[time_info.tm_wday]) + ", " + txt::kMonthNames[time_info.tm_mon]
+                            + " " + String(time_info.tm_mday);
+
     // Only update the display if the time has changed
     if (time_info.tm_hour != prev_hour || time_info.tm_min != prev_min) {
-        DrawClock(String(hour), String(min));
+        DrawClock(String(hour), String(min), date);
         prev_hour = time_info.tm_hour;
         prev_min = time_info.tm_min;
     }

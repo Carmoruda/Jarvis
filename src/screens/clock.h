@@ -14,4 +14,4 @@ extern const char *time_zone;
 void SyncTime();
 void ClockSetup();
 void ResetPrevTime();
-static void DrawClock(const String& hour_str, const String& min_str);
+static void DrawClock(const String& hour_str, const String& min_str, const String& date);

@@ -25,7 +25,7 @@ struct WeatherApiConfig {
 extern Weather WeatherData;
 
 constexpr WeatherApiConfig kOpenWeather = {
-    .city = "Coruña",
+    .city = "Madrid",
     .country_code = "ES",
     .units = "metric",
     .api_key = WEATHER_API_KEY,

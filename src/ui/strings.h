@@ -18,4 +18,27 @@ namespace txt {
     constexpr const char* kApiCallFailed            = "API call failed";
     constexpr const char* kHTTPError                = "HTTP error!";
     constexpr const char* kJSONDeserializationError = "JSON deserialization error!";
+    constexpr const char* kMonthNames[] = {
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    };
+    constexpr const char* kWeekdayNames[] = {
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    };
 }
