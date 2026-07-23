@@ -71,8 +71,7 @@ void ResetWifiStatus() {
     prev_rssi = -1;
 }
 
-void WifiStatus()
-{
+void UpdateWifiStatus() {
     // Get WiFi status
     const String ssid = WiFi.SSID();
     const String ip = WiFi.localIP().toString();

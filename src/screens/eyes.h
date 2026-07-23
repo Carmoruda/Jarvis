@@ -44,12 +44,11 @@ extern unsigned long last_eye_frame;
 extern unsigned long eye_frame_rate_ms;
 
 void SetupEyes(int fps, int next_blink, int spacing, Mood mood, Eye& left, Eye& right);
-void SetFrameRate(int fps);
-void SetEyeSpacing(int spacing);
-void SetMood(Mood mood, Eye& left, Eye& right);
-void RecalculateEyePosition(Eye& left, Eye& right);
 void UpdateEyes(Eye& left, Eye& right);
+static void SetFrameRate(int fps);
+static void SetEyeSpacing(int spacing);
+static void SetMood(Mood mood, Eye& left, Eye& right);
 static void UpdateMoodTransition(Eye& eye);
 static void UpdateBlinker(Blinker& b, Eye& left, Eye& right);
 static void DrawEye(const Eye& eye);
-void DrawEyes(const Eye& left, const Eye& right);
+static void DrawEyes(const Eye& left, const Eye& right);

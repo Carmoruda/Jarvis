@@ -43,7 +43,7 @@ void ResetPrevTime() {
     prev_min = -1;
 }
 
-void ClockSetup()
+void UpdateClock()
 {
     // Get the current time
     struct tm time_info{};

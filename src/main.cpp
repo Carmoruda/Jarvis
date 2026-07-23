@@ -70,13 +70,13 @@ void loop() {
             UpdateEyes(left_eye, right_eye);
             break;
         case ScreenStates::kClock:
-            ClockSetup();
+            UpdateClock();
             break;
         case ScreenStates::kWeather:
             UpdateWeather();
             break;
         case ScreenStates::kWifi:
-            WifiStatus();
+            UpdateWifiStatus();
             break;
         default: ;
     }

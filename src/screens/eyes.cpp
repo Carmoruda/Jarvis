@@ -20,15 +20,15 @@ void SetupEyes(const int fps, const int next_blink, const int spacing, Mood mood
     blinker.next_blink = millis() + next_blink;
 }
 
-void SetEyeSpacing(const int spacing) {
+static void SetEyeSpacing(const int spacing) {
     eye_spacing = spacing;
 }
 
-void SetFrameRate(const int fps) {
+static void SetFrameRate(const int fps) {
     eye_frame_rate_ms = fps;
 }
 
-void SetMood(Mood mood, Eye& left, Eye& right) {
+static void SetMood(Mood mood, Eye& left, Eye& right) {
     current_mood = mood;
 
     switch (mood) {
@@ -59,15 +59,6 @@ void SetMood(Mood mood, Eye& left, Eye& right) {
             break;
 
     }
-}
-
-void RecalculateEyePosition(Eye& left, Eye& right) {
-    const int half_gap = eye_spacing / 2;
-    constexpr int half_width = kScreen.width / 2;
-
-    left.x = half_width - half_gap - left.base_width / 2;
-    right.x = half_width + half_gap + right.base_width / 2;
-
 }
 
 void UpdateEyes(Eye& left, Eye& right) {
@@ -146,7 +137,7 @@ static void DrawEye(const Eye& eye) {
     }
 }
 
-void DrawEyes(const Eye& left, const Eye& right) {
+static void DrawEyes(const Eye& left, const Eye& right) {
     u8g2.clearBuffer();
     DrawEye(left);
     DrawEye(right);
