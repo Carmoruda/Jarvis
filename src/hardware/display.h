@@ -10,7 +10,17 @@
 
 #include <U8g2lib.h>
 
+struct Screen {
+    public:
+        uint8_t width;
+        uint8_t height;
+        uint8_t sda_pin;
+        uint8_t scl_pin;
+};
+
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
+
+constexpr Screen kScreen = {.width = 128, .height = 64, .sda_pin = 21, .scl_pin = 22};
 
 void DrawRightAligned(const String& text, int y, int right_margin = 5);
 void DrawHorizontallyCentered(const String& text, int y);

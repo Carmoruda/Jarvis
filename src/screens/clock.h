@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 
-extern const char *time_zone;
+extern const char* time_zone;
 
 void SyncTime();
 void ClockSetup();

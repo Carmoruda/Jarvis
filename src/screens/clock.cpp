@@ -4,7 +4,7 @@
 #include "hardware/display.h"
 
 // Time zone configuration
-const char *time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (CET) with daylight saving time
+const char* time_zone = "CET-1CEST,M3.5.0,M10.5.0/3"; // Central European Time (CET) with daylight saving time
 static int prev_hour = -1;
 static int prev_min = -1;
 

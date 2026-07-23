@@ -1,21 +1,12 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <WiFi.h>
+#include "screens/eyes.h"
 #include "screens/clock.h"
-#include "screens/wifi_settings.h"
 #include "screens/weather.h"
+#include "screens/wifi_settings.h"
 #include "hardware/display.h"
 #include "hardware/buttons.h"
-
-namespace {
-    struct Screen {
-    public:
-        uint8_t width;
-        uint8_t height;
-        uint8_t sda_pin;
-        uint8_t scl_pin;
-    };
-}
 
 namespace {
     enum ScreenStates {
@@ -27,10 +18,8 @@ namespace {
     };
 }
 
-constexpr Screen kScreen = {.width = 128, .height = 64, .sda_pin = 21, .scl_pin = 22};
-
 // Screen
-int screen = ScreenStates::kClock;
+int screen = ScreenStates::kEyes;
 int last_screen = -1;
 
 void setup() {
@@ -44,7 +33,7 @@ void setup() {
 
     ConnectWifi();
     SyncTime();
-
+    SetupEyes(20, 2000, 25);
     ButtonsSetup();
 
     delay(100);
@@ -78,10 +67,7 @@ void loop() {
 
     switch (screen) {
         case ScreenStates::kEyes:
-            u8g2.clearBuffer();
-            u8g2.drawFrame(0, 0, 128, 16);
-            u8g2.drawFrame(0, 17, 128, 47);
-            u8g2.sendBuffer();
+            UpdateEyes(left_eye, right_eye);
             break;
         case ScreenStates::kClock:
             ClockSetup();
