@@ -3,23 +3,21 @@
 #include "secrets.h"
 
 struct Weather {
-    public:
-        int condition_id;
-        String weather;
-        String description;
-        const uint8_t* icon;
-        float temperature;
-        float humidity;
-        float wind_speed;
+    int condition_id;
+    String weather;
+    String description;
+    const uint8_t* icon;
+    float temperature;
+    float humidity;
+    float wind_speed;
 };
 
 struct WeatherApiConfig {
-    public:
-        const char* city;
-        const char* country_code;
-        const char* units;
-        const char* api_key;
-        const unsigned long call_interval;
+    const char* city;
+    const char* country_code;
+    const char* units;
+    const char* api_key;
+    const unsigned long call_interval;
 };
 
 extern Weather WeatherData;
