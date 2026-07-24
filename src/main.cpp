@@ -33,7 +33,7 @@ void setup() {
 
     ConnectWifi();
     SyncTime();
-    SetupEyes(20, 2000, 12, Mood::kDefault, left_eye, right_eye);
+    eyes.Begin(50, 10, Mood::kDefault);
     ButtonsSetup();
 
     delay(100);
@@ -67,7 +67,7 @@ void loop() {
 
     switch (screen) {
         case ScreenStates::kEyes:
-            UpdateEyes(left_eye, right_eye);
+            eyes.Update();
             break;
         case ScreenStates::kClock:
             UpdateClock();
