@@ -33,7 +33,7 @@ void setup() {
 
     ConnectWifi();
     SyncTime();
-    SetupEyes(20, 2000, 18, Mood::kDefault, left_eye, right_eye);
+    SetupEyes(20, 2000, 12, Mood::kDefault, left_eye, right_eye);
     ButtonsSetup();
 
     delay(100);
