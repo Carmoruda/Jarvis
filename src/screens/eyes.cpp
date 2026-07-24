@@ -3,19 +3,22 @@
 
 Mood current_mood = Mood::kHappy;
 
+Idler idler;
+
 BlinkState blink_state = BlinkState::kOpen;
 Blinker blinker;
 
 Eye left_eye  = {.x = 40, .y = 35, .width = 36, .height = 2, .base_width = 36, .base_height = 36};
 Eye right_eye = {.x = 88, .y = 35, .width = 36, .height = 2, .base_width = 36, .base_height = 36};
 
-int eye_spacing = 18;
+int eye_spacing = 10;
 unsigned long last_eye_frame = 0;
 unsigned long eye_frame_rate_ms = 20; // Default value for 50 fps (1000/50 = 20 millis)
 
 void SetupEyes(const int fps, const int next_blink, const int spacing, Mood mood, Eye& left, Eye& right) {
     SetFrameRate(fps);
     SetEyeSpacing(spacing);
+    RecalculateBasePositions(left, right);
     SetMood(mood, left, right);
     blinker.next_blink = millis() + next_blink;
 }
@@ -61,21 +64,64 @@ static void SetMood(Mood mood, Eye& left, Eye& right) {
     }
 }
 
+static void RecalculateBasePositions(Eye& left, Eye& right) {
+    int total_width = left.base_width + eye_spacing + right.base_width;
+    int start_x = (kScreen.width - total_width) / 2;
+
+    left.x = start_x + left.base_width / 2;
+    right.x = start_x + left.base_width + eye_spacing + right.base_width / 2;
+    left.y = right.y = kScreen.height / 2;
+}
+
 void UpdateEyes(Eye& left, Eye& right) {
     if (millis() - last_eye_frame < eye_frame_rate_ms) return;
     last_eye_frame = millis();
 
     UpdateBlinker(blinker, left, right);
+    UpdateIdler(idler, left, right);
     UpdateMoodTransition(left);
     UpdateMoodTransition(right);
+    UpdatePosition(left);
+    UpdatePosition(right);
     DrawEyes(left, right);
 }
 
 static void UpdateMoodTransition(Eye& eye) {
-    eye.lower_lid     += static_cast<int>((eye.target_lower_lid     - eye.lower_lid)     * 0.3);
-    eye.upper_lid_l    += static_cast<int>((eye.target_upper_lid_l  - eye.upper_lid_l)   * 0.3);
-    eye.upper_lid_r    += static_cast<int>((eye.target_upper_lid_r  - eye.upper_lid_r)   * 0.3);
+    eye.lower_lid += static_cast<int>((eye.target_lower_lid     - eye.lower_lid)     * 0.3);
+    eye.upper_lid_l += static_cast<int>((eye.target_upper_lid_l  - eye.upper_lid_l)   * 0.3);
+    eye.upper_lid_r += static_cast<int>((eye.target_upper_lid_r  - eye.upper_lid_r)   * 0.3);
 
+}
+
+static int GetXConstraint(const Eye& left, const Eye& right) {
+   return kScreen.width - left.base_width - eye_spacing - right.base_width;
+}
+
+static int GetYConstraint(const Eye& left, const Eye& right) {
+    return (kScreen.height - max(left.base_height, right.base_height));
+}
+
+static void UpdateIdler(Idler& idler_controller, Eye& left, Eye& right) {
+    const unsigned long now = millis();
+
+    if (idler_controller.active && now >= idler_controller.next_move) {
+        const int dx = random(GetXConstraint(left, right));
+        const int dy = random(GetYConstraint(left, right));
+
+        const int left_edge_x = dx;
+        const int right_edge_x = dx + left.base_width + eye_spacing;
+
+        left.target_x = left_edge_x + left.base_width / 2;
+        right.target_x = right_edge_x + right.base_width / 2;
+        left.target_y = right.target_y = dy + left.base_height / 2;
+
+        idler_controller.next_move = now + idler_controller.interval_ms + random(idler_controller.variation_ms);
+    }
+}
+
+static void UpdatePosition(Eye& eye) {
+    eye.x += static_cast<int>((eye.target_x - eye.x) * 0.3);
+    eye.y += static_cast<int>((eye.target_y - eye.y) * 0.3);
 }
 
 static void UpdateBlinker(Blinker& b, Eye& left, Eye& right) {
