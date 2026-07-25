@@ -1,9 +1,9 @@
 // Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
-// Animated robot eyes for the eyes screen.
+// Animated robot-eye controller.
 //
-// Owns eye geometry, blinking, idle movement and mood expressions.
-// Drawing happens through the shared u8g2 instance. Screen-level
-// navigation lives in main.cpp, not here.
+// Declares the Eyes controller, which manages eye geometry, frame timing,
+// blinking, idle movement, and mood transitions. Rendering is performed
+// through the shared U8g2 display instance.
 
 #pragma once
 

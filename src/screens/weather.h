@@ -1,3 +1,13 @@
+// Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
+// Weather data retrieval and display.
+//
+// Declares the Weather controller, which periodically fetches current
+// conditions from OpenWeather, parses the response, maps weather conditions
+// to display icons, and renders the weather screen. API credentials are
+// provided through secrets.h.
+
+#pragma once
+
 #pragma once
 
 #include <Arduino.h>
