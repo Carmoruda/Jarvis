@@ -1,42 +1,37 @@
+#include "screens/wifi.h"
+
 #include <WiFi.h>
+
 #include "ui/strings.h"
 #include "hardware/display.h"
-#include "screens/wifi_settings.h"
 
-// WiFi status variables to track changes
-static String prev_ssid = "N/A";
-static String prev_ip = "N/A";
-static String prev_status = "N/A";
-static int prev_rssi = -1;
+Wifi wifi;
 
-void ConnectWifi()
-{
-    // Display a message while connecting to WiFi
+void Wifi::Connect() {
+    // Message while connecting to WiFi
     u8g2.clearBuffer();
     u8g2.setFont(u8g2_font_helvR08_tr);
     DrawHorizontallyCentered(txt::kWifiConnecting, 30);
     u8g2.sendBuffer();
 
-    // Connect to WiFi
-    WiFi.begin(kWifiConfig.ssid, kWifiConfig.password);
-
-    uint8_t retry = 0;
+    WiFi.begin(kConfig.ssid, kConfig.password);
 
     // Wait for connection with a timeout of 30 seconds (100 * 300ms)
+    uint8_t retry = 0;
     while (WiFiClass::status() != WL_CONNECTED && retry < 100) {
         delay(300);
         retry++;
     }
 
-    // Display connection result
     if (WiFiClass::status() == WL_CONNECTED) {
-
         u8g2.clearBuffer();
         DrawHorizontallyCentered(txt::kWifiConnected, 30);
         u8g2.sendBuffer();
 
-        delay(500);
+        prev_ssid_ = WiFi.SSID();
+        prev_status_ = (WiFiClass::status() == WL_CONNECTED) ? "Connected" : "Disconnected";
 
+        delay(500);
     } else {
         u8g2.clearBuffer();
         DrawHorizontallyCentered(txt::kWifiFailed, 30);
@@ -44,9 +39,10 @@ void ConnectWifi()
 
         delay(1500);
     }
+
 }
 
-static void DrawWifiSettings(const String &ssid, const String &ip, const String &status, const int rssi) {
+void Wifi::Draw(const String &ssid, const String &ip, const String &status, int rssi) {
     u8g2.clearBuffer();
 
     u8g2.drawLine(5, 15, 123, 15);
@@ -64,14 +60,14 @@ static void DrawWifiSettings(const String &ssid, const String &ip, const String 
     u8g2.sendBuffer();
 }
 
-void ResetWifiStatus() {
-    prev_ssid = "N/A";
-    prev_ip = "N/A";
-    prev_status = "N/A";
-    prev_rssi = -1;
+void Wifi::Reset() {
+    prev_ssid_ = "N/A";
+    prev_ip_ = "N/A";
+    prev_status_ = "N/A";
+    prev_rssi_ = -1;
 }
 
-void UpdateWifiStatus() {
+void Wifi::Update() {
     // Get WiFi status
     const String ssid = WiFi.SSID();
     const String ip = WiFi.localIP().toString();
@@ -79,11 +75,15 @@ void UpdateWifiStatus() {
     const int rssi = WiFi.RSSI();
 
     // Only update the display if the time has changed
-    if (ssid != prev_ssid || ip != prev_ip || status != prev_status || rssi != prev_rssi) {
-        DrawWifiSettings(ssid, ip, status, rssi);
-        prev_ssid = ssid;
-        prev_ip = ip;
-        prev_status = status;
-        prev_rssi = rssi;
+    if (ssid != prev_ssid_ || ip != prev_ip_ || status != prev_status_ || rssi != prev_rssi_) {
+        Draw(ssid, ip, status, rssi);
+        prev_ssid_ = ssid;
+        prev_ip_ = ip;
+        prev_status_ = status;
+        prev_rssi_ = rssi;
     }
+}
+
+const char* Wifi::GetNtpServer() const {
+    return kConfig.ntpServer;
 }

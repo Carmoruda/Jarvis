@@ -4,7 +4,7 @@
 #include "screens/eyes.h"
 #include "screens/clock.h"
 #include "screens/weather.h"
-#include "screens/wifi_settings.h"
+#include "screens/wifi.h"
 #include "hardware/display.h"
 #include "hardware/buttons.h"
 
@@ -31,7 +31,7 @@ void setup() {
     // Initialize the display
     u8g2.begin();
 
-    ConnectWifi();
+    wifi.Connect();
     SyncTime();
     eyes.Begin(50, 10, Mood::kDefault);
     ButtonsSetup();
@@ -60,7 +60,7 @@ void loop() {
         if (screen == ScreenStates::kClock) {
             ResetPrevTime();
         } else if (screen == ScreenStates::kWifi) {
-            ResetWifiStatus();
+            wifi.Reset();
         } else if (screen == ScreenStates::kWeather) {
             weather.ResetView();
         }
@@ -78,7 +78,7 @@ void loop() {
             weather.Update();
             break;
         case ScreenStates::kWifi:
-            UpdateWifiStatus();
+            wifi.Update();
             break;
         default: ;
     }

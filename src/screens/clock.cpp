@@ -1,6 +1,6 @@
 #include "clock.h"
 #include "ui/strings.h"
-#include "screens/wifi_settings.h"
+#include "screens/wifi.h"
 #include "hardware/display.h"
 
 // Time zone configuration
@@ -33,7 +33,7 @@ void SyncTime()
     u8g2.sendBuffer();
 
     // Configure time using NTP
-    configTzTime(time_zone, kWifiConfig.ntpServer);
+    configTzTime(time_zone, wifi.GetNtpServer());
 
     delay(1000);
 }
