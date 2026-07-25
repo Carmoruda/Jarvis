@@ -73,7 +73,7 @@ void loop() {
             UpdateClock();
             break;
         case ScreenStates::kWeather:
-            UpdateWeather();
+            weather.Update();
             break;
         case ScreenStates::kWifi:
             UpdateWifiStatus();
