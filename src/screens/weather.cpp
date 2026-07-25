@@ -152,3 +152,9 @@ void Weather::Update() {
 
     Draw();
 }
+
+void Weather::ResetView() {
+    prev_hour_ = -1;
+    prev_min_ = -1;
+    changed_ = true;
+}

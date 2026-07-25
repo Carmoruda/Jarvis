@@ -61,6 +61,8 @@ void loop() {
             ResetPrevTime();
         } else if (screen == ScreenStates::kWifi) {
             ResetWifiStatus();
+        } else if (screen == ScreenStates::kWeather) {
+            weather.ResetView();
         }
 
     }

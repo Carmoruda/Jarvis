@@ -18,6 +18,7 @@
 class Weather {
     public:
         void Update();
+        void ResetView();
 
     private:
         struct ApiConfig {
