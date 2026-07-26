@@ -1,9 +1,9 @@
 // Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
-// OLED display configuration.
+// Debounced button input handling.
 //
-// Declares the shared U8g2 display instance used to render the application
-// screens. The display uses an SSD1306 controller, a 128x64 resolution,
-// full-buffer rendering, and the hardware I2C interface.
+// Declares the Button controller, which configures an active-low GPIO input
+// with its internal pull-up resistor and detects button presses after applying
+// software debouncing. Also declares the shared navigation buttons.
 
 #pragma once
 

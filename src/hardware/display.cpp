@@ -19,8 +19,7 @@ void DrawVerticallyCentered(const String& text, const int x) {
     const int ascent = u8g2.getAscent();
     const int descent = u8g2.getDescent();
 
-    const int y =
-        (u8g2.getDisplayHeight() + ascent + descent) / 2;
+    const int y = (u8g2.getDisplayHeight() + ascent + descent) / 2;
 
     u8g2.drawStr(x, y, text.c_str());
 }
