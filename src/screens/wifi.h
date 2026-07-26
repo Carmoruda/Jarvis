@@ -1,9 +1,9 @@
 // Copyright (c) 2026 Carmoruda. MIT License. See LICENSE for details.
-// Wi-Fi connection and status screen.
+// Wi-Fi connection and status controller.
 //
-// Manages connecting to Wi-Fi, NTP time sync, and rendering the
-// Wi-Fi status screen. Connection credentials come from secrets.h.
-// This file owns the Wi-Fi screen only; clock/eye rendering lives elsewhere.
+// Declares the Wifi controller, which establishes the network connection,
+// tracks connection details, and renders the Wi-Fi status screen. Connection
+// credentials come from secrets.h, and the configured NTP server is exposed.
 
 #pragma once
 
@@ -17,6 +17,7 @@ class Wifi {
         void Reset();
 
         const char *GetNtpServer() const;
+
     private:
         struct Config {
             const char* ssid;

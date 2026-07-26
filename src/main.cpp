@@ -32,7 +32,7 @@ void setup() {
     u8g2.begin();
 
     wifi.Connect();
-    SyncTime();
+    time_clock.Sync();
     eyes.Begin(50, 10, Mood::kDefault);
     ButtonsSetup();
 
@@ -58,7 +58,7 @@ void loop() {
         Serial.println(screen);
 
         if (screen == ScreenStates::kClock) {
-            ResetPrevTime();
+            time_clock.Reset();
         } else if (screen == ScreenStates::kWifi) {
             wifi.Reset();
         } else if (screen == ScreenStates::kWeather) {
@@ -72,7 +72,7 @@ void loop() {
             eyes.Update();
             break;
         case ScreenStates::kClock:
-            UpdateClock();
+            time_clock.Update();
             break;
         case ScreenStates::kWeather:
             weather.Update();

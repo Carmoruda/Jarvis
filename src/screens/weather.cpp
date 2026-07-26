@@ -38,6 +38,8 @@ void Weather::Fetch() {
     const String payload  = http.getString();
     if (ParseData(payload)) {
         icon_ = AssignIcon();
+        Serial.printf("id=%d  cond=%s  icon=%p\n",
+                      condition_id_, condition_.c_str(), icon_);
         status_ = txt::kWeatherFetchOkay;
         changed_ = true;
     }
@@ -123,7 +125,7 @@ void Weather::Draw() {
     // Weather icon and description (right)
     u8g2.setFont(u8g2_font_helvR08_tf);
     if (icon_ != nullptr) {
-        u8g2.drawBitmap(99, 22, icons::kIconWidth / 8, icons::kIconHeight, icons::kIconThunderstorm);
+        u8g2.drawBitmap(99, 22, icons::kIconWidth / 8, icons::kIconHeight, icon_);
         DrawRightAligned(condition_description_, 62, 5);
     }
 
