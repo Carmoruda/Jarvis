@@ -19,8 +19,8 @@ namespace {
 }
 
 // Screen
-int screen = ScreenStates::kEyes;
-int last_screen = -1;
+static int screen = kEyes;
+static int last_screen = -1;
 
 void setup() {
     Serial.begin(115200);
@@ -58,31 +58,29 @@ void loop() {
         Serial.print("Screen changed to: ");
         Serial.println(screen);
 
-        if (screen == ScreenStates::kClock) {
+        if (screen == kClock) {
             time_clock.Reset();
-        } else if (screen == ScreenStates::kWifi) {
+        } else if (screen == kWifi) {
             wifi.Reset();
-        } else if (screen == ScreenStates::kWeather) {
-            weather.ResetView();
+        } else if (screen == kWeather) {
+            weather.Reset();
         }
 
     }
 
     switch (screen) {
-        case ScreenStates::kEyes:
+        case kEyes:
             eyes.Update();
             break;
-        case ScreenStates::kClock:
+        case kClock:
             time_clock.Update();
             break;
-        case ScreenStates::kWeather:
+        case kWeather:
             weather.Update();
             break;
-        case ScreenStates::kWifi:
+        case kWifi:
             wifi.Update();
             break;
         default: ;
     }
-
-    u8g2.sendBuffer();
 }

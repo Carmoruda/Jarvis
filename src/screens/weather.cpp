@@ -141,7 +141,7 @@ void Weather::Draw() {
     // u8g2.drawXBMP(45, 54, icons::kIconSmallWidth, icons::kIconSmallHeight, icons::kIconWindSpeed);
     // u8g2.drawStr(55, 62, wind_speed_str);
 
-    u8g2.setFont(u8g2_font_helvR08_tf);
+    u8g2.sendBuffer();
 }
 
 void Weather::Update() {
@@ -155,7 +155,7 @@ void Weather::Update() {
     Draw();
 }
 
-void Weather::ResetView() {
+void Weather::Reset() {
     prev_hour_ = -1;
     prev_min_ = -1;
     changed_ = true;
