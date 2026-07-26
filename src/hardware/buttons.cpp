@@ -1,29 +1,31 @@
 #include "buttons.h"
 
-Button up_button = {.pin = 32, .last_state = HIGH, .stable_state = HIGH, .last_change_time = 0, .debounce_time = 50};
-Button down_button = {.pin = 27, .last_state = HIGH, .stable_state = HIGH, .last_change_time = 0, .debounce_time = 50};
+Button up_button(32);
+Button down_button(27);
 
-void ButtonsSetup() {
-    pinMode(up_button.pin, INPUT_PULLUP);
-    pinMode(down_button.pin, INPUT_PULLUP);
+Button::Button(const uint8_t pin, const unsigned long debounce_ms): pin_(pin), debounce_ms_(debounce_ms) {}
+
+void Button::Setup() const {
+    pinMode(pin_, INPUT_PULLUP);
 }
 
-bool ReadButton(Button &button) {
-    const int reading = digitalRead(button.pin);
+bool Button::Read() {
+    const int reading = digitalRead(pin_);
 
     // Check if the button state has changed
-    if (reading != button.last_state) {
-        button.last_change_time = millis();
-        button.last_state = reading;
+    if (reading != last_state_) {
+        last_change_time_ = millis();
+        last_state_ = reading;
     }
 
     // If the button hasn't been stable for the debounce time, ignore it
-    if ((millis() - button.last_change_time) <= button.debounce_time) return false;
+    if ((millis() - last_change_time_) <= debounce_ms_) return false;
 
-    if (reading != button.stable_state) {
-        button.stable_state = reading;
+    // If the button isn't stable, read it
+    if (reading != stable_state_) {
+        stable_state_ = reading;
         return (reading == LOW); // Button pressed
     }
 
-    return false; // Button not pressed
+    return false;
 }

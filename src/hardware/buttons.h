@@ -9,20 +9,20 @@
 
 #include <Arduino.h>
 
-struct Button {
+class Button {
     public:
-        uint8_t pin;
-        int last_state;
-        int stable_state;
-        unsigned long last_change_time;
-        const unsigned long debounce_time;
+        explicit Button(uint8_t pin, unsigned long debounce_ms = 50);
+
+        void Setup() const;
+        bool Read();
+
+    private:
+        uint8_t pin_;
+        unsigned long debounce_ms_;
+        int last_state_ = HIGH;
+        int stable_state_ = HIGH;
+        unsigned long last_change_time_ = 0;
 };
 
 extern Button up_button;
 extern Button down_button;
-
-extern int screen;
-extern int last_screen;
-
-bool ReadButton(Button &button);
-void ButtonsSetup();

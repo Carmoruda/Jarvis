@@ -34,7 +34,8 @@ void setup() {
     wifi.Connect();
     time_clock.Sync();
     eyes.Begin(50, 10, Mood::kDefault);
-    ButtonsSetup();
+    down_button.Setup();
+    up_button.Setup();
 
     delay(100);
 }
@@ -43,10 +44,10 @@ void loop() {
     // Reconnect to WiFi if disconnected
     if (WiFiClass::status() != WL_CONNECTED) WiFi.reconnect();
 
-    if (ReadButton(up_button) && screen < ScreenStates::kNumScreens - 1) {
+    if (up_button.Read() && screen < ScreenStates::kNumScreens - 1) {
         screen++;
     }
-    if (ReadButton(down_button) && screen > 0) {
+    if (down_button.Read() && screen > 0) {
         screen--;
     }
 
