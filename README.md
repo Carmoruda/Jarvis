@@ -16,16 +16,15 @@ An open-source desk buddy that blinks, tells the time, and notices when you're n
 
 ## Overview
 
-Jarvis is an open-source desktop companion built on an ESP32. It shows a pair of animated eyes on an OLED display, keeps the time synced over WiFi, and uses an ultrasonic sensor to notice when you get close, looking up and reacting when you're near.
+Jarvis is an open-source desktop companion built on an ESP32. It shows a pair of animated eyes on an OLED display, keeps the time synced over Wi-Fi, and uses an ultrasonic sensor to notice when you get close, looking up and reacting when you're near.
 
-Timekeeping is handled over the network: the ESP32 connects to WiFi and syncs to an NTP server on boot, with automatic daylight-saving handling for the local timezone, so there's no dedicated RTC to keep set. The eyes are driven by the FluxGarage RoboEyes library, and a button lets you switch between moods and views.
+Timekeeping is handled over the network: the ESP32 connects to Wi-Fi and syncs to an NTP server on boot, with automatic daylight-saving handling for the local timezone, so there's no dedicated RTC to keep set. The eyes are hand-drawn with the U8g2 library, blinking, glancing around, and shifting between moods, and two buttons let you switch between views.
 
 The project is designed to be:
-
-- Expressive, with animated eyes that blink, glance around, and react to presence.
-- Easy to read, with a crisp OLED display and a WiFi-synced clock.
-- Simple to build, on a single USB-C-powered board.
-- Hackable and well-documented, as a learning reference for embedded projects.
+* Expressive, with animated eyes that blink, glance around, and react to presence.
+* Easy to read, with a crisp OLED display and a WiFi-synced clock.
+* Simple to build, on a single USB-C-powered board.
+* Hackable and well-documented, as a learning reference for embedded projects.
 
 ### Pinout
 
@@ -98,7 +97,7 @@ The table below maps each component to its ESP32 GPIO. For the full wiring, the 
 
 ### Configuration
 
-Wi-Fi credentials are kept out of version control. Copy the template and fill in your own:
+Wi-Fi and API credentials are kept out of version control. Copy the template and fill in your own:
 
 ```bash
 cp secrets.h.example secrets.h
@@ -109,7 +108,10 @@ Then edit `secrets.h` with your network details:
 ```cpp
 #define WIFI_SSID "your_wifi"
 #define WIFI_PASS "your_password"
+#define WEATHER_API_KEY "your_openweather_api_key"
 ```
+
+The weather screen uses the [OpenWeather](https://openweathermap.org/api) API. Create a free account to get an API key and drop it in `secrets.h`.
 
 ### Build & Flash
 
@@ -147,12 +149,12 @@ You can run Jarvis entirely in VS Code without any physical hardware using the [
 ---
 
 <h3 align="center">License</h3>
-<pre align="center">Copyright © 2026 Carmen<br><br>Jarvis is open-source and released under the MIT License.<br><br>See <a href="./LICENSE.md">LICENSE.md</a> for the full details.</pre>
+<pre>Copyright © 2026 Carmen<br><br>Jarvis is open-source and released under the MIT License.<br><br>See <a href="./LICENSE.md">LICENSE.md</a> for the full details.</pre>
 
 <h3 align="center">Credits &amp; Team</h3>
 <p align="center">Built and maintained by Carmen :)</p>
 <p align="center">
     <a href="https://github.com/carmoruda/Chronos-Ion/graphs/contributors">
-        <img src="https://contrib.rocks/image?repo=carmoruda/Jarvis" width="50"/>
+        <img src="https://contrib.rocks/image?repo=carmoruda/Jarvis" width="50" alt="Project Contributors"/>
     </a>
 </p>
