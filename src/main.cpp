@@ -6,7 +6,7 @@
 #include "screens/weather.h"
 #include "screens/wifi.h"
 #include "hardware/display.h"
-#include "hardware/buttons.h"
+#include "hardware/input.h"
 
 namespace {
     enum ScreenStates {
@@ -34,8 +34,7 @@ void setup() {
     wifi.Connect();
     time_clock.Sync();
     eyes.Begin(50, 10, Mood::kDefault);
-    down_button.Setup();
-    up_button.Setup();
+    touch.Setup();
 
     delay(100);
 }
@@ -44,11 +43,8 @@ void loop() {
     // Reconnect to WiFi if disconnected
     if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
 
-    if (up_button.Read() && screen < ScreenStates::kNumScreens - 1) {
-        screen++;
-    }
-    if (down_button.Read() && screen > 0) {
-        screen--;
+    if (touch.Pressed()) {
+        screen = (screen + 1) % kNumScreens;
     }
 
     if (screen != last_screen) {

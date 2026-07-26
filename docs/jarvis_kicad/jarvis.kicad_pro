@@ -578,6 +578,10 @@
       {
         "netclass": "GPIO",
         "pattern": "*IO*"
+      },
+      {
+        "netclass": "GPIO",
+        "pattern": "slash"
       }
     ]
   },
@@ -709,7 +713,7 @@
         "uuid": "55543077-78f5-4281-a37d-9b6d46b087fa"
       }
     ],
-    "used_designators": "#PWR7",
+    "used_designators": "#PWR9,S1,D3",
     "variants": []
   },
   "sheets": [
