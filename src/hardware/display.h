@@ -17,7 +17,7 @@ struct Screen {
     uint8_t scl_pin;
 };
 
-constexpr Screen kScreen = {.width = 128, .height = 64, .sda_pin = 21, .scl_pin = 22};
+constexpr Screen kScreen = {.width = 128, .height = 64, .sda_pin = 19, .scl_pin = 20};
 
 extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
 

@@ -53,18 +53,18 @@ The table below maps each component to its ESP32 GPIO. For the full wiring, the 
     </tr>
     <tr>
       <td>SDA</td>
-      <td>GPIO21</td>
+      <td>GPIO19</td>
       <td>I²C data</td>
     </tr>
     <tr>
       <td>SCL</td>
-      <td>GPIO22</td>
+      <td>GPIO20</td>
       <td>I²C clock</td>
     </tr>
     <tr>
       <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html" target="_blank">Next Screen Button</a></td>
       <td>Pin 1</td>
-      <td>GPIO32</td>
+      <td>GPIO4</td>
       <td>INPUT_PULLUP; pressed = LOW</td>
     </tr>
     <tr>
@@ -75,7 +75,7 @@ The table below maps each component to its ESP32 GPIO. For the full wiring, the 
     <tr>
       <td rowspan="2"><a href="https://www.lcsc.com/product-detail/C52750873.html" target="_blank">Previous Screen Button</a></td>
       <td>Pin 1</td>
-      <td>GPIO27</td>
+      <td>GPIO5</td>
       <td>INPUT_PULLUP; pressed = LOW</td>
     </tr>
     <tr>

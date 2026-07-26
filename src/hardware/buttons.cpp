@@ -1,7 +1,7 @@
 #include "buttons.h"
 
-Button up_button(32);
-Button down_button(27);
+Button up_button(4);
+Button down_button(5);
 
 Button::Button(const uint8_t pin, const unsigned long debounce_ms): pin_(pin), debounce_ms_(debounce_ms) {}
 

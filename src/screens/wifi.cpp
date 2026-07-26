@@ -18,18 +18,18 @@ void Wifi::Connect() {
 
     // Wait for connection with a timeout of 30 seconds (100 * 300ms)
     uint8_t retry = 0;
-    while (WiFiClass::status() != WL_CONNECTED && retry < 100) {
+    while (WiFi.status() != WL_CONNECTED && retry < 100) {
         delay(300);
         retry++;
     }
 
-    if (WiFiClass::status() == WL_CONNECTED) {
+    if (WiFi.status() == WL_CONNECTED) {
         u8g2.clearBuffer();
         DrawHorizontallyCentered(txt::kWifiConnected, 30);
         u8g2.sendBuffer();
 
         prev_ssid_ = WiFi.SSID();
-        prev_status_ = (WiFiClass::status() == WL_CONNECTED) ? "Connected" : "Disconnected";
+        prev_status_ = (WiFi.status() == WL_CONNECTED) ? "Connected" : "Disconnected";
 
         delay(500);
     } else {
@@ -71,7 +71,7 @@ void Wifi::Update() {
     // Get WiFi status
     const String ssid = WiFi.SSID();
     const String ip = WiFi.localIP().toString();
-    const String status = (WiFiClass::status() == WL_CONNECTED) ? "Connected" : "Disconnected";
+    const String status = (WiFi.status() == WL_CONNECTED) ? "Connected" : "Disconnected";
     const int rssi = WiFi.RSSI();
 
     // Only update the display if the time has changed

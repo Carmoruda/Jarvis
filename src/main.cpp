@@ -42,7 +42,7 @@ void setup() {
 
 void loop() {
     // Reconnect to WiFi if disconnected
-    if (WiFiClass::status() != WL_CONNECTED) WiFi.reconnect();
+    if (WiFi.status() != WL_CONNECTED) WiFi.reconnect();
 
     if (up_button.Read() && screen < ScreenStates::kNumScreens - 1) {
         screen++;
